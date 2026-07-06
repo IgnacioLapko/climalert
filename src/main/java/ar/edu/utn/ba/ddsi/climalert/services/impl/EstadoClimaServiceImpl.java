@@ -1,13 +1,13 @@
 package ar.edu.utn.ba.ddsi.climalert.services.impl;
 
-import ar.edu.utn.ba.ddsi.climalert.models.EstadoClima;
+import ar.edu.utn.ba.ddsi.climalert.models.RegistroClima;
 import ar.edu.utn.ba.ddsi.climalert.services.EstadoClimaService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EstadoClimaServiceImpl implements EstadoClimaService {
   @Override
-  public EstadoClima obtenerCondicionesMetereologicas() {
+  public RegistroClima obtenerCondicionesMetereologicas() {
     return null;
   }
 }
