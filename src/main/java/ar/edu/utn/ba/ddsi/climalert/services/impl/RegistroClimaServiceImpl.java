@@ -1,0 +1,47 @@
+package ar.edu.utn.ba.ddsi.climalert.services.impl;
+
+import ar.edu.utn.ba.ddsi.climalert.models.RegistroClima;
+import ar.edu.utn.ba.ddsi.climalert.repositories.RegistroClimaticoRepository;
+import ar.edu.utn.ba.ddsi.climalert.services.RegistroClimaService;
+import ar.edu.utn.ba.ddsi.climalert.services.dto.RespuestaAPIClimaDTO;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+@Service
+@RequiredArgsConstructor
+public class RegistroClimaServiceImpl implements RegistroClimaService {
+
+  private final RestTemplate clienteRest;
+  private final RegistroClimaticoRepository repositorioClima;
+
+  @Value("${weatherapi.key:TU_API_KEY_ACA}")
+  private String claveAccesoApi;
+
+  private final String UBICACION_OBJETIVO = "CABA";
+
+  // cron que ejecuta cada 5 minutos
+  @Scheduled(cron = "0 */5 * * * *")
+  public void obtenerYGuardarDatosClimaticos() {
+    try {
+      String urlDeConsulta = String.format("http://api.weatherapi.com/v1/current.json?key=%s&q=%s", claveAccesoApi, UBICACION_OBJETIVO);
+      RespuestaAPIClimaDTO respuestaClima = clienteRest.getForObject(urlDeConsulta, RespuestaAPIClimaDTO.class);
+
+      if (respuestaClima != null && respuestaClima.climaActual() != null) {
+        RegistroClima nuevoRegistro = new RegistroClima(
+            UBICACION_OBJETIVO,
+            respuestaClima.climaActual().temperaturaGradosCelsius(),
+            respuestaClima.climaActual().porcentajeHumedad()
+        );
+        repositorioClima.save(nuevoRegistro);
+        System.out.println("Datos climáticos almacenados: " + nuevoRegistro);
+      }
+    } catch (Exception excepcion) {
+      System.err.println("Error al obtener datos de WeatherAPI: " + excepcion.getMessage());
+    }
+  }
+}
+//http://api.weatherapi.com/v1/current.json?q=Buenos Aires&key=64f8024b77584c73b3e213626260407
