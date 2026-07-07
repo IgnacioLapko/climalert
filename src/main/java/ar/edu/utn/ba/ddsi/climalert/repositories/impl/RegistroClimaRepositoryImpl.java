@@ -1,6 +1,7 @@
 package ar.edu.utn.ba.ddsi.climalert.repositories.impl;
 
 import ar.edu.utn.ba.ddsi.climalert.models.RegistroClima;
+import ar.edu.utn.ba.ddsi.climalert.repositories.RegistroClimaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Repository
-public class RegistroClimaRepositoryImpl {
+public class RegistroClimaRepositoryImpl implements RegistroClimaRepository {
 
   private final List<RegistroClima> almacenamientoEnMemoria = new CopyOnWriteArrayList<>();
 

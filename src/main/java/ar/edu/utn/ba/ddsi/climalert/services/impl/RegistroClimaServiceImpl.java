@@ -1,11 +1,10 @@
 package ar.edu.utn.ba.ddsi.climalert.services.impl;
 
 import ar.edu.utn.ba.ddsi.climalert.models.RegistroClima;
-import ar.edu.utn.ba.ddsi.climalert.repositories.RegistroClimaticoRepository;
+import ar.edu.utn.ba.ddsi.climalert.repositories.RegistroClimaRepository;
 import ar.edu.utn.ba.ddsi.climalert.services.RegistroClimaService;
 import ar.edu.utn.ba.ddsi.climalert.services.dto.RespuestaAPIClimaDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 public class RegistroClimaServiceImpl implements RegistroClimaService {
 
   private final RestTemplate clienteRest;
-  private final RegistroClimaticoRepository repositorioClima;
+  private final RegistroClimaRepository repositorioClima;
 
   @Value("${weatherapi.key:TU_API_KEY_ACA}")
   private String claveAccesoApi;
